@@ -1,21 +1,14 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "chikatch-console",
+  "version": "0.0.1",
+  "description": "Desktop Console App for Chikatch, Wireless Psyllium Sysytem.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "repository": "https://github.com/chikatch/chikatch-console.git",
+  "author": "Tatsuya Yamamoto",
+  "license": "MIT",
   "devDependencies": {
     "electron": "~1.7.8"
   }
