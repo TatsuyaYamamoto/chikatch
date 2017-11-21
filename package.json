@@ -6,13 +6,26 @@
   "scripts": {
     "start": "electron .",
     "install": "npm run rebuild",
-    "rebuild": "electron-rebuild"
+    "rebuild": "electron-rebuild",
+    "pack:mac": "build --mac",
+    "pack:win": "build --win"
+  },
+  "build": {
+    "productName": "Chikatch Console",
+    "appId": "net.sokontokoro-factory.apps.chikatch",
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    }
   },
   "repository": "https://github.com/chikatch/chikatch-console.git",
   "author": "Tatsuya Yamamoto",
   "license": "MIT",
   "devDependencies": {
     "electron": "~1.7.8",
+    "electron-builder": "^19.45.5",
     "electron-rebuild": "^1.6.0"
   },
   "dependencies": {
