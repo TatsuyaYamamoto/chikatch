@@ -1,19 +1,103 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+<head>
+  <meta charset="UTF-8">
+  <title>Chikatch console</title>
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+  <link rel="stylesheet" href="./node_modules/material-design-icons/iconfont/material-icons.css">
+  <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css">
+</head>
+<body>
+<div id="app">
+  <div class="container">
+    <h1>Chikatch console</h1>
+    To reload app, press command + R.
+    <div>
+      v: {{env.version.chikatch}}<br/>
+      OS: {{env.os}}<br/>
+      Node: {{env.version.node}}<br/>
+      Chrome: {{env.version.chrome}}<br/>
+      Electron: {{env.version.electron}}
+    </div>
+
+    <h2>Attached devices</h2>
+    <ul class="collapsible popout" data-collapsible="accordion">
+      <li v-if="ports.length === 0">
+        <div class="collapsible-header">
+          No device is attached.
+        </div>
+      </li>
+      <li v-else v-for="port in ports">
+        <div class="collapsible-header">
+          <i class="material-icons">devices</i>{{ port.comName }}
+        </div>
+        <div class="collapsible-body">
+          <div>
+            <span>locationId: {{ port.locationId }}</span><br/>
+            <span>manufacturer: {{ port.manufacturer }}</span><br/>
+            <span>pnpId: {{ port.pnpId }}</span><br/>
+            <span>productId: {{ port.productId }}</span><br/>
+            <span>serialNumber: {{ port.serialNumber }}</span><br/>
+            <span>vendorId: {{ port.vendorId }}</span>
+          </div>
+
+          <div>
+            <a :class="{ disabled: selectedComName === port.comName }"
+               class="waves-effect waves-light btn"
+               @click="connect(port.comName)">
+              Connect
+            </a>
+            <a :class="{ disabled: selectedComName !== port.comName }"
+               class="waves-effect waves-light btn"
+               @click="disconnect(port.comName)">
+              Disconnect
+            </a>
+          </div>
+
+          <h3>Controller</h3>
+          <a :class="{ disabled: selectedComName !== port.comName }"
+             class="waves-effect waves-light btn"
+             @click="turnOn(0, 100, 100)">
+            Red
+          </a>
+          <a :class="{ disabled: selectedComName !== port.comName }"
+             class="waves-effect waves-light btn"
+             @click="turnOn(100, 0, 100)">
+            Green
+          </a>
+          <a :class="{ disabled: selectedComName !== port.comName }"
+             class="waves-effect waves-light btn"
+             @click="turnOn(100, 100, 0)">
+            Blue
+          </a>
+          <a :class="{ disabled: selectedComName !== port.comName }"
+             class="waves-effect waves-light btn"
+             @click="turnOff()">
+            Off
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
+<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.js"></script>
+<script>
+    window.onerror = function (msg, file, line, column) {
+        alert(msg);
+        document.body.innerText = `
+        まじすまんぬ、、、、
+
+        [message]
+        ${msg}
+
+        [file]
+        ${file}:${line}:${column}`
+    };
+
+    require('./renderer')
+</script>
+</body>
 </html>
