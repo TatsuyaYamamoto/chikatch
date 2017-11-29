@@ -1,6 +1,6 @@
 const Vue = require('vue/dist/vue');
 const {Twelite, ChangeOutputCommand} = require('twelite-sdk');
-const {version} = require('./package.json');
+const {version} = require('../../package.json');
 
 const {
     node,
