@@ -57,18 +57,23 @@
           <h3>Controller</h3>
           <a :class="{ disabled: selectedComName !== port.comName }"
              class="waves-effect waves-light btn"
-             @click="turnOn(0, 100, 100)">
+             @click="turnOn(100, 0, 0)">
             Red
           </a>
           <a :class="{ disabled: selectedComName !== port.comName }"
              class="waves-effect waves-light btn"
-             @click="turnOn(100, 0, 100)">
+             @click="turnOn(0, 100, 0)">
             Green
           </a>
           <a :class="{ disabled: selectedComName !== port.comName }"
              class="waves-effect waves-light btn"
-             @click="turnOn(100, 100, 0)">
+             @click="turnOn(0, 0, 100)">
             Blue
+          </a>
+          <a :class="{ disabled: selectedComName !== port.comName }"
+             class="waves-effect waves-light btn"
+             @click="fadeOut()">
+            FadeOut
           </a>
           <a :class="{ disabled: selectedComName !== port.comName }"
              class="waves-effect waves-light btn"

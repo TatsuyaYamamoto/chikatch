@@ -23,18 +23,33 @@ const vm = new Vue({
             }
         },
         ports: [],
-        selectedComName: null
+        selectedComName: null,
+        color: {
+            red: 0,
+            green: 0,
+            blue: 0,
+        },
+    },
+    computed: {
+        pwm: function () {
+            const {red, green, blue} = this.color;
+
+            const r = (0 <= red && red <= 100) ? (100 - red) : -1;
+            const g = (0 <= green && green <= 100) ? (100 - green) : -1;
+            const b = (0 <= blue && blue <= 100) ? (100 - blue) : -1;
+            return [r, g, -1, b];
+        }
     },
     methods: {
         loadPorts: function () {
             Twelite.serialPorts()
                 .then((ports) => {
-                console.log(`Load serial ports.  ${ports.length > 0 ?
-                `Find ${ports.length} twelite devices.` :
-                'Not found any twelite device.'}`);
+                    console.log(`Load serial ports.  ${ports.length > 0 ?
+                        `Find ${ports.length} twelite devices.` :
+                        'Not found any twelite device.'}`);
 
-            this.ports = ports;
-        });
+                    this.ports = ports;
+                });
         },
         connect: function (comName) {
             if (this.selectedComName) {
@@ -58,16 +73,48 @@ const vm = new Vue({
         turnOn: function (r, g, b) {
             if (!twelite) return;
 
+            this.color.red = r;
+            this.color.green = g;
+            this.color.blue = b;
+
             const brightCommand = new ChangeOutputCommand();
-            brightCommand.analog = [r, g, -1, b];
+            brightCommand.analog = this.pwm;
             twelite.write(brightCommand);
         },
         turnOff: function () {
             if (!twelite) return;
 
+            this.color.red = 0;
+            this.color.green = 0;
+            this.color.blue = 0;
+
             const darkCommand = new ChangeOutputCommand();
-            darkCommand.analog = [100, 100, -1, 100];
+            darkCommand.analog = this.pwm;
             twelite.write(darkCommand)
+        },
+        fadeOut: function () {
+            const redDecreaseRatio = this.color.red / 10;
+            const greenDecreaseRatio = this.color.green / 10;
+            const blueDecreaseRatio = this.color.blue / 10;
+
+            const decrease = () => {
+                this.color.red -= redDecreaseRatio;
+                this.color.green -= greenDecreaseRatio;
+                this.color.blue -= blueDecreaseRatio;
+
+                const fadeOutCommand = new ChangeOutputCommand();
+                fadeOutCommand.analog = this.pwm;
+                twelite.write(fadeOutCommand);
+
+                const {red, green, blue} = this.color;
+                if (red <= 0 && green <= 0 && blue <= 0) {
+                    this.turnOff();
+                } else {
+                    setTimeout(() => decrease(), 100);
+                }
+            };
+
+            decrease();
         },
         onTweliteOpen: function (err) {
             if (err) {
