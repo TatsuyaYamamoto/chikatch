@@ -74,6 +74,8 @@ const vm = new Vue({
         turnOn: function (r, g, b) {
             if (!twelite) return;
 
+            this.turnOffRandomLoop();
+
             this.color.red = r;
             this.color.green = g;
             this.color.blue = b;
@@ -83,6 +85,8 @@ const vm = new Vue({
         turnOff: function () {
             if (!twelite) return;
 
+            this.turnOffRandomLoop();
+
             this.color.red = 0;
             this.color.green = 0;
             this.color.blue = 0;
@@ -91,7 +95,7 @@ const vm = new Vue({
         },
         fadeOut: function () {
             this.turnOffRandomLoop();
-            
+
             const redDecreaseRatio = this.color.red / 10;
             const greenDecreaseRatio = this.color.green / 10;
             const blueDecreaseRatio = this.color.blue / 10;
