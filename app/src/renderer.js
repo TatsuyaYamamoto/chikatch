@@ -78,9 +78,7 @@ const vm = new Vue({
             this.color.green = g;
             this.color.blue = b;
 
-            const brightCommand = new ChangeOutputCommand();
-            brightCommand.analog = this.pwm;
-            twelite.write(brightCommand);
+            this.writeCommand();
         },
         turnOff: function () {
             if (!twelite) return;
@@ -89,13 +87,11 @@ const vm = new Vue({
             this.color.green = 0;
             this.color.blue = 0;
 
-            const darkCommand = new ChangeOutputCommand();
-            darkCommand.analog = this.pwm;
-            twelite.write(darkCommand)
+            this.writeCommand();
         },
         fadeOut: function () {
             this.isLooping = false;
-            
+
             const redDecreaseRatio = this.color.red / 10;
             const greenDecreaseRatio = this.color.green / 10;
             const blueDecreaseRatio = this.color.blue / 10;
@@ -105,9 +101,7 @@ const vm = new Vue({
                 this.color.green -= greenDecreaseRatio;
                 this.color.blue -= blueDecreaseRatio;
 
-                const fadeOutCommand = new ChangeOutputCommand();
-                fadeOutCommand.analog = this.pwm;
-                twelite.write(fadeOutCommand);
+                this.writeCommand();
 
                 const {red, green, blue} = this.color;
                 if (red <= 0 && green <= 0 && blue <= 0) {
@@ -139,18 +133,19 @@ const vm = new Vue({
                 this.color.green = randomColor();
                 this.color.blue = randomColor();
 
-                console.log(this.color);
-
-                const command = new ChangeOutputCommand();
-                command.analog = this.pwm;
-                twelite.write(command);
+                this.writeCommand();
 
                 setTimeout(() => light(), ((60 / 168) * 4) * 1000 * interval);
             };
 
             light();
         },
+        writeCommand: function () {
+            const command = new ChangeOutputCommand();
+            command.analog = this.pwm;
 
+            twelite && twelite.write(command);
+        },
         turnOffRandomLoop: function () {
             this.isLooping = false;
             this.turnOff();
