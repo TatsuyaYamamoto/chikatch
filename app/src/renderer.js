@@ -29,7 +29,7 @@ const vm = new Vue({
             green: 0,
             blue: 0,
         },
-        isLooping: false,
+        loopTimeoutId: null,
     },
     computed: {
         pwm: function () {
@@ -90,8 +90,8 @@ const vm = new Vue({
             this.writeCommand();
         },
         fadeOut: function () {
-            this.isLooping = false;
-
+            this.turnOffRandomLoop();
+            
             const redDecreaseRatio = this.color.red / 10;
             const greenDecreaseRatio = this.color.green / 10;
             const blueDecreaseRatio = this.color.blue / 10;
@@ -114,41 +114,36 @@ const vm = new Vue({
             decrease();
         },
         turnOnRandomLoop: function (interval = 1) {
-            if (this.isLooping) {
-                return;
-            }
-
-            this.isLooping = true;
 
             const min = 0;
             const max = 100;
             const randomColor = () => Math.floor(Math.random() * (max + 1 - min)) + min;
 
             const light = () => {
-                if (!this.isLooping) {
-                    return;
-                }
-
                 this.color.red = randomColor();
                 this.color.green = randomColor();
                 this.color.blue = randomColor();
 
                 this.writeCommand();
 
-                setTimeout(() => light(), ((60 / 168) * 4) * 1000 * interval);
+                this.loopTimeoutId = setTimeout(() => light(), ((60 / 168) * 4) * 1000 * interval);
             };
 
             light();
+        },
+        turnOffRandomLoop: function () {
+            if (!this.loopTimeoutId) {
+                return;
+            }
+
+            clearTimeout(this.loopTimeoutId);
+            this.loopTimeoutId = null;
         },
         writeCommand: function () {
             const command = new ChangeOutputCommand();
             command.analog = this.pwm;
 
             twelite && twelite.write(command);
-        },
-        turnOffRandomLoop: function () {
-            this.isLooping = false;
-            this.turnOff();
         },
         onTweliteOpen: function (err) {
             if (err) {
