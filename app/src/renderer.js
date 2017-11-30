@@ -29,6 +29,7 @@ const vm = new Vue({
             green: 0,
             blue: 0,
         },
+        isLooping: false,
     },
     computed: {
         pwm: function () {
@@ -93,6 +94,8 @@ const vm = new Vue({
             twelite.write(darkCommand)
         },
         fadeOut: function () {
+            this.isLooping = false;
+            
             const redDecreaseRatio = this.color.red / 10;
             const greenDecreaseRatio = this.color.green / 10;
             const blueDecreaseRatio = this.color.blue / 10;
@@ -115,6 +118,42 @@ const vm = new Vue({
             };
 
             decrease();
+        },
+        turnOnRandomLoop: function (interval = 1) {
+            if (this.isLooping) {
+                return;
+            }
+
+            this.isLooping = true;
+
+            const min = 0;
+            const max = 100;
+            const randomColor = () => Math.floor(Math.random() * (max + 1 - min)) + min;
+
+            const light = () => {
+                if (!this.isLooping) {
+                    return;
+                }
+
+                this.color.red = randomColor();
+                this.color.green = randomColor();
+                this.color.blue = randomColor();
+
+                console.log(this.color);
+
+                const command = new ChangeOutputCommand();
+                command.analog = this.pwm;
+                twelite.write(command);
+
+                setTimeout(() => light(), ((60 / 168) * 4) * 1000 * interval);
+            };
+
+            light();
+        },
+
+        turnOffRandomLoop: function () {
+            this.isLooping = false;
+            this.turnOff();
         },
         onTweliteOpen: function (err) {
             if (err) {
