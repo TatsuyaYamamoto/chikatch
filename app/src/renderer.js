@@ -46,6 +46,9 @@ const vm = new Vue({
             const g = (0 <= green && green <= 100) ? (100 - green) : -1;
             const b = (0 <= blue && blue <= 100) ? (100 - blue) : -1;
             return [r, g, -1, b];
+        },
+        isRandomLooping: function () {
+            return !!this.loopTimeoutId;
         }
     },
     methods: {
@@ -79,7 +82,9 @@ const vm = new Vue({
             this.selectedComName = null;
         },
         turnOn: function (r, g, b) {
-            this.turnOffRandomLoop();
+            if (this.isRandomLooping) {
+                this.turnOffRandomLoop()
+            }
 
             this.color.red = r;
             this.color.green = g;
@@ -88,7 +93,9 @@ const vm = new Vue({
             this.writeCommand();
         },
         turnOff: function () {
-            this.turnOffRandomLoop();
+            if (this.isRandomLooping) {
+                this.turnOffRandomLoop()
+            }
 
             this.color.red = 0;
             this.color.green = 0;
