@@ -121,6 +121,9 @@ const vm = new Vue({
             decrease();
         },
         turnOnRandomLoop: function (interval = 1) {
+            if (this.loopTimeoutId) {
+                return;
+            }
 
             const light = () => {
                 this.color.red = getRandomColor(COLOR_MIN_VALUE, COLOR_MAX_VALUE);
