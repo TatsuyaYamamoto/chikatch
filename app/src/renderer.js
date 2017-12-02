@@ -79,8 +79,6 @@ const vm = new Vue({
             this.selectedComName = null;
         },
         turnOn: function (r, g, b) {
-            if (!twelite) return;
-
             this.turnOffRandomLoop();
 
             this.color.red = r;
@@ -90,8 +88,6 @@ const vm = new Vue({
             this.writeCommand();
         },
         turnOff: function () {
-            if (!twelite) return;
-
             this.turnOffRandomLoop();
 
             this.color.red = 0;
