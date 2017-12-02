@@ -68,7 +68,7 @@
                 </a>
             </div>
             <div class="row">
-                <a :class="{ disabled: !selectedComName }"
+                <a :class="{ disabled: !selectedComName || isBlack }"
                    class="waves-effect waves-light btn-large"
                    @click="fadeOut()">
                     FadeOut
@@ -79,14 +79,15 @@
                     Off
                 </a>
             </div>
+            <br/>
             <div class="row">
-                <a :class="{ disabled: !selectedComName }"
+                <a :class="{ disabled: !selectedComName || isRandomLooping }"
                    class="waves-effect waves-light btn-large"
                    @click="turnOnRandomLoop()">
                     Random Loop
                 </a>
 
-                <a :class="{ disabled: !selectedComName }"
+                <a :class="{ disabled: !selectedComName || !isRandomLooping }"
                    class="waves-effect waves-light btn-large"
                    @click="turnOffRandomLoop()">
                     Stop Loop
