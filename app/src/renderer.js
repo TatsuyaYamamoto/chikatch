@@ -12,6 +12,8 @@ let twelite = null;
 
 const COLOR_MIN_VALUE = 0;
 const COLOR_MAX_VALUE = 100;
+const FADEOUT_COLOR_VALUE_RATIO = 1 / 20;
+const FADEOUT_INTERVAL = 50; // [ms]
 
 function getRandomColor(min, max) {
     return Math.floor(Math.random() * (max + 1 - min)) + min;
@@ -49,6 +51,10 @@ const vm = new Vue({
         },
         isRandomLooping: function () {
             return !!this.loopTimeoutId;
+        },
+        isBlack: function () {
+            const {red, green, blue} = this.color;
+            return red <= 0 && green <= 0 && blue <= 0;
         }
     },
     methods: {
@@ -106,9 +112,9 @@ const vm = new Vue({
         fadeOut: function () {
             this.turnOffRandomLoop();
 
-            const redDecreaseRatio = this.color.red / 10;
-            const greenDecreaseRatio = this.color.green / 10;
-            const blueDecreaseRatio = this.color.blue / 10;
+            const redDecreaseRatio = this.color.red * FADEOUT_COLOR_VALUE_RATIO;
+            const greenDecreaseRatio = this.color.green * FADEOUT_COLOR_VALUE_RATIO;
+            const blueDecreaseRatio = this.color.blue * FADEOUT_COLOR_VALUE_RATIO;
 
             const decrease = () => {
                 this.color.red -= redDecreaseRatio;
@@ -117,11 +123,10 @@ const vm = new Vue({
 
                 this.writeCommand();
 
-                const {red, green, blue} = this.color;
-                if (red <= 0 && green <= 0 && blue <= 0) {
+                if (this.isBlack) {
                     this.turnOff();
                 } else {
-                    setTimeout(() => decrease(), 100);
+                    setTimeout(decrease, FADEOUT_INTERVAL);
                 }
             };
 
