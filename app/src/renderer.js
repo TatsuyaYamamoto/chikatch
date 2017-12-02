@@ -10,6 +10,13 @@ const {
 
 let twelite = null;
 
+const COLOR_MIN_VALUE = 0;
+const COLOR_MAX_VALUE = 100;
+
+function getRandomColor(min, max) {
+    return Math.floor(Math.random() * (max + 1 - min)) + min;
+}
+
 const vm = new Vue({
     el: '#app',
     data: {
@@ -119,14 +126,10 @@ const vm = new Vue({
         },
         turnOnRandomLoop: function (interval = 1) {
 
-            const min = 0;
-            const max = 100;
-            const randomColor = () => Math.floor(Math.random() * (max + 1 - min)) + min;
-
             const light = () => {
-                this.color.red = randomColor();
-                this.color.green = randomColor();
-                this.color.blue = randomColor();
+                this.color.red = getRandomColor(COLOR_MIN_VALUE, COLOR_MAX_VALUE);
+                this.color.green = getRandomColor(COLOR_MIN_VALUE, COLOR_MAX_VALUE);
+                this.color.blue = getRandomColor(COLOR_MIN_VALUE, COLOR_MAX_VALUE);
 
                 this.writeCommand();
 
