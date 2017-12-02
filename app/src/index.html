@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chikatch console</title>
-
+    <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="../../node_modules/material-design-icons/iconfont/material-icons.css">
     <link rel="stylesheet" href="../../node_modules/materialize-css/dist/css/materialize.min.css">
 </head>
@@ -11,7 +11,7 @@
 <div id="app">
     <div class="container">
 
-        <h2>Attached devices</h2>
+        <h2 class="header">Attached devices</h2>
         <ul class="collapsible popout" data-collapsible="accordion">
             <li v-if="ports.length === 0">
                 <div class="collapsible-header">
@@ -34,12 +34,12 @@
 
                     <div>
                         <a :class="{ disabled: selectedComName === port.comName }"
-                           class="waves-effect waves-light btn"
+                           class="btn amber darken-4"
                            @click="connect(port.comName)">
                             Connect
                         </a>
                         <a :class="{ disabled: selectedComName !== port.comName }"
-                           class="waves-effect waves-light btn"
+                           class="btn amber darken-4"
                            @click="disconnect(port.comName)">
                             Disconnect
                         </a>
@@ -48,7 +48,7 @@
             </li>
         </ul>
 
-        <h2>Controller</h2>
+        <h2 class="header">Controller</h2>
         <div class="center-align">
             <div class="row">
                 <a :class="{ disabled: !selectedComName }"
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    <footer class="page-footer">
+    <footer class="page-footer amber darken-4">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
