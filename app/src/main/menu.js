@@ -1,13 +1,13 @@
 const {app, Menu} = require('electron');
 
-const {build} = require('../../../package.json');
+const {APP_NAME} = require('../constants.js');
 
 const templateMenu = [
     {
-        label: build.productName,
+        label: APP_NAME,
         submenu: [
             {
-                label: build.productName,
+                label: APP_NAME,
             },
             {
                 type: 'separator',
