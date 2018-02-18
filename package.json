@@ -7,8 +7,12 @@
     "start": "electron .",
     "install": "npm run rebuild",
     "rebuild": "electron-rebuild",
-    "pack:mac": "build --mac",
-    "pack:win": "build --win"
+    "pack": "run-s pack:*",
+    "pack:mac": "rm -rf dist/mac/ dist/*.dmg* dist/latest-mac.yml && build --mac",
+    "pack:win": "rm -rf dist/win-unpacked/ dist/*.exe dist/latest.yml && build --win",
+    "archive": "run-s archive:*",
+    "archive:osx": "npm run pack:mac && zip -j dist/ChikatchConsole.dmg.zip dist/*.dmg",
+    "archive:win": "npm run pack:win && zip -j dist/ChikatchConsole.exe.zip dist/*.exe"
   },
   "build": {
     "productName": "Chikatch Console",
@@ -26,7 +30,8 @@
   "devDependencies": {
     "electron": "~1.7.8",
     "electron-builder": "^19.45.5",
-    "electron-rebuild": "^1.6.0"
+    "electron-rebuild": "^1.6.0",
+    "npm-run-all": "^4.1.2"
   },
   "dependencies": {
     "material-design-icons": "^3.0.1",
