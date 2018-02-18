@@ -1,0 +1,32 @@
+language: objective-c
+cache:
+  directories:
+    - node_modules
+env:
+  - NODE_VERSION="8.9.1"
+before_install:
+  # Install Node.js
+  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+  - source /tmp/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use --delete-prefix $NODE_VERSION
+  - node --version
+
+  # Install OSX packages
+  - brew update
+  - brew install yarn
+  - brew install wine
+  - wine --version
+  - brew install makensis
+install:
+  - yarn
+before_deploy:
+  - npm run archive
+deploy:
+  provider: releases
+  skip_cleanup: true
+  file:
+    - dist/ChikatchConsole.dmg.zip
+    - dist/ChikatchConsole.exe.zip
+  on:
+    tags: true
