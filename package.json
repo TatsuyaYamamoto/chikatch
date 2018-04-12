@@ -8,11 +8,8 @@
     "install": "npm run rebuild",
     "rebuild": "electron-rebuild",
     "pack": "run-s pack:*",
-    "pack:mac": "rm -rf dist/mac/ dist/*.dmg* dist/latest-mac.yml && build --mac",
-    "pack:win": "rm -rf dist/win-unpacked/ dist/*.exe dist/latest.yml && build --win",
-    "archive": "run-s archive:*",
-    "archive:osx": "npm run pack:mac && zip -j dist/ChikatchConsole.dmg.zip dist/*.dmg",
-    "archive:win": "npm run pack:win && zip -j dist/ChikatchConsole.exe.zip dist/*.exe"
+    "pack:mac": "electron-builder --mac",
+    "pack:win": "electron-builder --win"
   },
   "build": {
     "productName": "Chikatch Console",
