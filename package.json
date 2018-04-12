@@ -28,8 +28,8 @@
   "author": "Tatsuya Yamamoto",
   "license": "MIT",
   "devDependencies": {
-    "electron": "~1.7.8",
-    "electron-builder": "^19.45.5",
+    "electron": "~1.8.4",
+    "electron-builder": "^20.8.1",
     "electron-rebuild": "^1.6.0",
     "npm-run-all": "^4.1.2"
   },
