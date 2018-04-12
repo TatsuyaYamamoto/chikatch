@@ -1,6 +1,6 @@
 {
   "name": "chikatch-console",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Desktop Console App for Chikatch, Wireless Psyllium Sysytem.",
   "main": "app/src/main/index.js",
   "scripts": {
